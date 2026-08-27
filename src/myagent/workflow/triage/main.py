@@ -1,5 +1,6 @@
 from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.providers.openai import OpenAIProvider
+import asyncio
 from myagent.core.config import settings
 from myagent.deps.context import AgentDeps
 from myagent.schemas.agent_outputs import TriageResult
@@ -95,9 +96,11 @@ workspace_context:
     text: >
 
     """
-  while True:
-    user_input = input("please input your selection: ")
-    if user_input.lower() == 'exit':
-      break
-    result = triage_agent.run(WORKSPACE_CONTEXT + user_input)
-    print(result)
+  async def main():
+    while True:
+      user_input = input("please input your selection: ")
+      if user_input.lower() == 'exit':
+        break
+      result = await triage_agent.run(WORKSPACE_CONTEXT + user_input)
+      print(result)
+  asyncio.run(main())

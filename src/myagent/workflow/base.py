@@ -11,6 +11,6 @@ class SingleRun:
             raise ValueError("SingleRun does not support tools")
         self.agent = Agent(*args, **kwargs)
 
-    def run(self, input: str, **kwargs: Any):
-        result = self.agent.run_sync(input, **kwargs)
+    async def run(self, input: str, **kwargs: Any):
+        result = await self.agent.run(input, **kwargs)
         return result.output

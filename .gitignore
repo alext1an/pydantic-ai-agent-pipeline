@@ -3,4 +3,6 @@ task.md
 uv.lock
 .env
 .venv
+.coverage
 __pycache__
+.pi

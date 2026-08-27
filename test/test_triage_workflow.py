@@ -19,8 +19,7 @@ def build_triage_agent():
         )
     return _builder
 
-
-def test_singlerun_returns_structured_triage_result(build_triage_agent):
+async def test_singlerun_returns_structured_triage_result(build_triage_agent):
     model = TestModel(
         custom_output_args={
             "items": [
@@ -32,7 +31,7 @@ def test_singlerun_returns_structured_triage_result(build_triage_agent):
     )
     triage_agent = build_triage_agent(model)
 
-    result = triage_agent.run("Please triage this paragraph.")
+    result = await triage_agent.run("Please triage this paragraph.")
 
     assert isinstance(result, TriageResult)
     assert len(result.items) == 3
@@ -43,7 +42,7 @@ def test_singlerun_returns_structured_triage_result(build_triage_agent):
     ]
 
 
-def test_singlerun_allows_explicit_output_type_override():
+async def test_singlerun_allows_explicit_output_type_override():
     agent = SingleRun(
         model=TestModel(custom_output_text="override works"),
         result_type=TriageResult,
@@ -52,13 +51,13 @@ def test_singlerun_allows_explicit_output_type_override():
         retries=0,
     )
 
-    result = agent.run("any input")
+    result = await agent.run("any input")
 
     assert isinstance(result, str)
     assert result == "override works"
 
 
-def test_triage_agent_records_model_request_and_output_schema(build_triage_agent):
+async def test_triage_agent_records_model_request_and_output_schema(build_triage_agent):
     model = TestModel(
         custom_output_args={
             "items": [
@@ -70,9 +69,14 @@ def test_triage_agent_records_model_request_and_output_schema(build_triage_agent
     )
     triage_agent = build_triage_agent(model)
 
-    _ = triage_agent.run("User selected one sentence.")
+    _ = await triage_agent.run("User selected one sentence.")
 
     params = model.last_model_request_parameters
     assert params is not None
     assert params.output_tools is not None
     assert len(params.output_tools) >= 1
+
+@pytest.mark.parametrize("unsupported_argument", ["tools", "toolsets"])
+def test_singlerun_rejects_tools(unsupported_argument):
+    with pytest.raises(ValueError, match="SingleRun does not support tools"):
+        SingleRun(model=TestModel(), **{unsupported_argument: [object()]})
