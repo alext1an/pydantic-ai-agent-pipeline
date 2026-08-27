@@ -20,7 +20,16 @@ triage_agent = SingleRun(
     result_type=TriageResult,
     system_prompt=TRIAGE_SYSTEM_PROMPT,
     retries=2,
+    name="triage",
+    model_settings={
+        'extra_body': {
+            'reasoning': {
+                'enabled': False
+                }
+                }
+    },
 )
+triage_agent.agent.instrument = True
 
 if __name__ == '__main__':
   WORKSPACE_CONTEXT = """
