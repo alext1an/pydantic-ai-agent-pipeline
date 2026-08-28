@@ -1,0 +1,11 @@
+task.md
+.python-version
+uv.lock
+.env
+.venv
+.coverage
+__pycache__
+.pi
+.agents/
+reviews/
+datasets/
