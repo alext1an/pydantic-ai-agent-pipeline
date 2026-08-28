@@ -6,3 +6,6 @@ uv.lock
 .coverage
 __pycache__
 .pi
+.agents/
+reviews/
+datasets/
