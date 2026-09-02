@@ -20,7 +20,12 @@ from pathlib import Path
 from pydantic_evals import Case, Dataset
 from pydantic_evals.evaluators import LLMJudge
 
-from myagent.workflow.triage.main import model, triage_agent
+from myagent.core.config import get_settings
+from myagent.core.provider import build_model
+from myagent.workflow.triage.agent import build_triage_agent
+
+model = build_model(get_settings())
+triage_agent = build_triage_agent()
 
 GOLDEN = Path(__file__).parent / "datasets" / "triage_golden.jsonl"
 REVIEWS = Path(__file__).parent / "reviews"
