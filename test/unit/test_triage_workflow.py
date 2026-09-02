@@ -13,7 +13,7 @@ def build_triage_agent():
         return SingleRun(
             model=model,
             deps_type=AgentDeps,
-            result_type=TriageResult,
+            output_type=TriageResult,
             system_prompt=TRIAGE_SYSTEM_PROMPT,
             retries=0,
         )
@@ -45,7 +45,6 @@ async def test_singlerun_returns_structured_triage_result(build_triage_agent):
 async def test_singlerun_allows_explicit_output_type_override():
     agent = SingleRun(
         model=TestModel(custom_output_text="override works"),
-        result_type=TriageResult,
         output_type=str,
         system_prompt="Return plain text.",
         retries=0,
