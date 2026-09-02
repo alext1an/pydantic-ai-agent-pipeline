@@ -26,6 +26,3 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     return Settings() # type: ignore
-
-settings = get_settings()
-myagent.core.telemetry.init_telemetry(endpoint=settings.PHOENIX_COLLECTOR_ENDPOINT)
