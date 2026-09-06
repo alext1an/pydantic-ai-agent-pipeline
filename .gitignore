@@ -1,4 +1,5 @@
 task.md
+decisions.md
 .python-version
 uv.lock
 .env
